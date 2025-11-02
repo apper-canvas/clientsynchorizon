@@ -53,16 +53,16 @@ const Dashboard = () => {
       ]);
 
       // Calculate statistics
-      const activeDeals = dealsData.filter(deal => 
-        !["Closed Won", "Closed Lost"].includes(deal.stage)
+const activeDeals = dealsData.filter(deal => 
+        !["Closed Won", "Closed Lost"].includes(deal.stage_c)
       ).length;
 
-      const wonDeals = dealsData.filter(deal => deal.stage === "Closed Won");
-      const totalRevenue = wonDeals.reduce((sum, deal) => sum + deal.value, 0);
+const wonDeals = dealsData.filter(deal => deal.stage_c === "Closed Won");
+      const totalRevenue = wonDeals.reduce((sum, deal) => sum + deal.value_c, 0);
 
       const pipelineValue = dealsData
-        .filter(deal => !["Closed Won", "Closed Lost"].includes(deal.stage))
-        .reduce((sum, deal) => sum + deal.value, 0);
+        .filter(deal => !["Closed Won", "Closed Lost"].includes(deal.stage_c))
+        .reduce((sum, deal) => sum + deal.value_c, 0);
 
       setStats({
         totalContacts: contactsData.length,
@@ -73,10 +73,10 @@ const Dashboard = () => {
         pipelineValue
       });
 
-      // Recent activities (last 5 completed)
+// Recent activities (last 5 completed)
       const recentCompleted = activitiesData
-        .filter(activity => activity.completed)
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .filter(activity => activity.completed_c)
+        .sort((a, b) => new Date(b.createdAt_c) - new Date(a.createdAt_c))
         .slice(0, 5);
 
       setRecentActivities(recentCompleted);
@@ -106,10 +106,10 @@ const Dashboard = () => {
     }).format(amount);
   };
 
-  const getContactName = (contactId) => {
+const getContactName = (contactId) => {
     if (!contactId) return "General Task";
-    const contact = contacts.find(c => c.Id === contactId);
-    return contact ? `${contact.firstName} ${contact.lastName}` : "Unknown Contact";
+    const contact = contacts.find(c => c.Id === (contactId?.Id || contactId));
+    return contact ? `${contact.firstName_c} ${contact.lastName_c}` : "Unknown Contact";
   };
 
   const getActivityIcon = (type) => {
@@ -295,18 +295,18 @@ const Dashboard = () => {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-slate-900 truncate">
-                            {activity.subject}
+<p className="text-sm font-medium text-slate-900 truncate">
+                            {activity.subject_c}
                           </p>
                           <p className="text-xs text-slate-600 truncate">
-                            {getContactName(activity.contactId)}
+                            {getContactName(activity.contactId_c)}
                           </p>
                           <p className="text-xs text-slate-500">
-                            {format(new Date(activity.createdAt), "MMM d, h:mm a")}
+                            {format(new Date(activity.createdAt_c), "MMM d, h:mm a")}
                           </p>
                         </div>
-                        <Badge variant="success" size="sm">
-                          {activity.type}
+<Badge variant="success" size="sm">
+                          {activity.type_c}
                         </Badge>
                       </div>
                     ))
@@ -339,18 +339,18 @@ const Dashboard = () => {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-slate-900 truncate">
-                            {activity.subject}
+<p className="text-sm font-medium text-slate-900 truncate">
+                            {activity.subject_c}
                           </p>
                           <p className="text-xs text-slate-600 truncate">
-                            {getContactName(activity.contactId)}
+                            {getContactName(activity.contactId_c)}
                           </p>
                           <p className="text-xs text-slate-500">
-                            Due: {format(new Date(activity.dueDate), "MMM d, h:mm a")}
+                            Due: {format(new Date(activity.dueDate_c), "MMM d, h:mm a")}
                           </p>
                         </div>
-                        <Badge variant="warning" size="sm">
-                          {activity.type}
+<Badge variant="warning" size="sm">
+                          {activity.type_c}
                         </Badge>
                       </div>
                     ))

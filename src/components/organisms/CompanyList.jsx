@@ -42,11 +42,11 @@ const CompanyList = () => {
   }, []);
 
   useEffect(() => {
-    if (searchTerm) {
+if (searchTerm) {
       const filtered = companies.filter(company =>
-        company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        company.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        company.size.toLowerCase().includes(searchTerm.toLowerCase())
+        company.name_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.industry_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.size_c?.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredCompanies(filtered);
     } else {
@@ -174,59 +174,59 @@ const CompanyList = () => {
                     <div className="flex items-start space-x-4">
                       <div className="h-16 w-16 bg-gradient-to-br from-primary-500/10 to-primary-600/10 rounded-xl flex items-center justify-center border border-primary-200">
                         <ApperIcon 
-                          name={getIndustryIcon(company.industry)} 
+name={getIndustryIcon(company.industry_c)} 
                           className="h-8 w-8 text-primary-600" 
                         />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
                           <div>
-                            <h3 className="text-xl font-semibold text-slate-900 mb-1">
-                              {company.name}
+                            <h3 className="text-lg font-semibold text-slate-900 truncate">
+                              {company.name_c}
                             </h3>
                             <div className="flex items-center space-x-3 mb-2">
                               <Badge variant="primary">
-                                {company.industry}
+                                {company.industry_c}
                               </Badge>
-                              <Badge variant={getSizeColor(company.size)}>
-                                {company.size}
+                              <Badge variant={getSizeColor(company.size_c)}>
+                                {company.size_c}
                               </Badge>
                             </div>
                           </div>
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                          {company.website && (
+{company.website_c && (
                             <div className="flex items-center text-sm text-slate-600">
                               <ApperIcon name="Globe" className="h-4 w-4 mr-2 text-slate-400" />
                               <a 
-                                href={company.website} 
+                                href={company.website_c} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="text-primary-600 hover:text-primary-700 truncate"
                               >
-                                {company.website}
+                                {company.website_c}
                               </a>
                             </div>
                           )}
-                          {company.address && (
+                          {company.address_c && (
                             <div className="flex items-start text-sm text-slate-600">
                               <ApperIcon name="MapPin" className="h-4 w-4 mr-2 text-slate-400 mt-0.5" />
-                              <span className="truncate">{company.address}</span>
+                              <span className="truncate">{company.address_c}</span>
                             </div>
                           )}
                         </div>
 
-                        {company.notes && (
+{company.notes_c && (
                           <div className="mb-4">
                             <p className="text-sm text-slate-600 line-clamp-2">
-                              {company.notes}
+                              {company.notes_c}
                             </p>
                           </div>
                         )}
 
                         <div className="flex items-center justify-between text-xs text-slate-500">
-                          <span>Created: {format(new Date(company.createdAt), "MMM d, yyyy")}</span>
+                          <span>Created: {format(new Date(company.createdAt_c), "MMM d, yyyy")}</span>
                         </div>
                       </div>
                     </div>

@@ -23,15 +23,15 @@ const DealModal = ({ isOpen, onClose, deal, contacts, companies, onDealSaved }) 
 
   useEffect(() => {
     if (deal) {
-      setFormData({
-        title: deal.title || "",
-        value: deal.value?.toString() || "",
-        stage: deal.stage || "Lead",
-        contactId: deal.contactId?.toString() || "",
-        companyId: deal.companyId?.toString() || "",
-        probability: deal.probability?.toString() || "",
-        closeDate: deal.closeDate ? deal.closeDate.split('T')[0] : "",
-        notes: deal.notes || ""
+setFormData({
+        title_c: deal.title_c || "",
+        value_c: deal.value_c?.toString() || "",
+        stage_c: deal.stage_c || "Lead",
+        contactId_c: deal.contactId_c?.Id?.toString() || deal.contactId_c?.toString() || "",
+        companyId_c: deal.companyId_c?.Id?.toString() || deal.companyId_c?.toString() || "",
+        probability_c: deal.probability_c?.toString() || "",
+        closeDate_c: deal.closeDate_c ? deal.closeDate_c.split('T')[0] : "",
+        notes_c: deal.notes_c || ""
       });
     } else {
       setFormData({
@@ -84,10 +84,10 @@ const DealModal = ({ isOpen, onClose, deal, contacts, companies, onDealSaved }) 
       const dealData = {
         ...formData,
         value: parseFloat(formData.value),
-        contactId: parseInt(formData.contactId),
-        companyId: parseInt(formData.companyId),
-        probability: parseInt(formData.probability),
-        closeDate: new Date(formData.closeDate).toISOString()
+contactId_c: parseInt(formData.contactId_c),
+        companyId_c: parseInt(formData.companyId_c),
+        probability_c: parseInt(formData.probability_c),
+        closeDate_c: new Date(formData.closeDate_c).toISOString()
       };
 
       let savedDeal;
@@ -115,8 +115,8 @@ const DealModal = ({ isOpen, onClose, deal, contacts, companies, onDealSaved }) 
   };
 
   // Filter contacts based on selected company
-  const filteredContacts = formData.companyId ? 
-    contacts.filter(contact => contact.companyId === parseInt(formData.companyId)) :
+const filteredContacts = formData.companyId_c ? 
+    contacts.filter(contact => (contact.companyId_c?.Id || contact.companyId_c) === parseInt(formData.companyId_c)) :
     contacts;
 
   return (
@@ -206,28 +206,28 @@ const DealModal = ({ isOpen, onClose, deal, contacts, companies, onDealSaved }) 
             >
               <option value="">Select a company</option>
               {companies.map(company => (
-                <option key={company.Id} value={company.Id}>
-                  {company.name}
+<option key={company.Id} value={company.Id}>
+                  {company.name_c}
                 </option>
               ))}
             </Select>
           </FormField>
 
           <FormField
-            label="Primary Contact"
-            error={errors.contactId}
+            label="Related Contact"
+            error={errors.contactId_c}
             required
           >
             <Select
-              name="contactId"
-              value={formData.contactId}
+              name="contactId_c"
+              value={formData.contactId_c}
               onChange={handleChange}
-              error={errors.contactId}
+              error={errors.contactId_c}
             >
               <option value="">Select a contact</option>
               {filteredContacts.map(contact => (
                 <option key={contact.Id} value={contact.Id}>
-                  {contact.firstName} {contact.lastName}
+                  {contact.firstName_c} {contact.lastName_c}
                 </option>
               ))}
             </Select>

@@ -4,14 +4,14 @@ import { toast } from "react-toastify";
 import { contactsService } from "@/services/api/contactsService";
 import { companiesService } from "@/services/api/companiesService";
 import { Card, CardContent } from "@/components/atoms/Card";
-import ContactModal from "@/components/organisms/ContactModal";
 import { format } from "date-fns";
 import ApperIcon from "@/components/ApperIcon";
-import SearchBar from "@/components/molecules/SearchBar";
 import Button from "@/components/atoms/Button";
-import Empty from "@/components/ui/Empty";
+import ContactModal from "@/components/organisms/ContactModal";
 import Loading from "@/components/ui/Loading";
+import Empty from "@/components/ui/Empty";
 import Error from "@/components/ui/Error";
+import SearchBar from "@/components/molecules/SearchBar";
 
 const ContactList = () => {
 const [contacts, setContacts] = useState([]);
@@ -48,12 +48,12 @@ const [contacts, setContacts] = useState([]);
   }, []);
 
   useEffect(() => {
-    if (searchTerm) {
+if (searchTerm) {
       const filtered = contacts.filter(contact =>
-        contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+        contact.firstName_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.lastName_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.email_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.title_c?.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredContacts(filtered);
     } else {
@@ -183,8 +183,8 @@ const handleContactSaved = (savedContact) => {
   };
 
   const getCompanyName = (companyId) => {
-    const company = companies.find(c => c.Id === companyId);
-    return company ? company.name : "Unknown Company";
+const company = companies.find(c => c.Id === (companyId?.Id || companyId));
+    return company ? company.name_c : "Unknown Company";
   };
 
   if (loading) return <Loading variant="list" />;
@@ -328,7 +328,7 @@ return (
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className={`card-hover transition-all ${isSelected ? 'ring-2 ring-primary-500 bg-primary-50' : ''}`}>
+<Card className={`card-hover transition-all ${isSelected ? 'ring-2 ring-primary-500 bg-primary-50' : ''}`}>
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="flex items-center">
@@ -342,26 +342,28 @@ return (
                       <div className="flex items-start justify-between flex-1">
                         <div className="flex items-start space-x-4">
                           <div className="h-12 w-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-medium text-lg">
-                            {contact.firstName?.[0]}{contact.lastName?.[0]}
+                            {contact.firstName_c?.[0]}{contact.lastName_c?.[0]}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-semibold text-slate-900">
-                              {contact.firstName} {contact.lastName}
-                            </h3>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <h3 className="text-lg font-semibold text-slate-900">
+                                {contact.firstName_c} {contact.lastName_c}
+                              </h3>
+                            </div>
                             <p className="text-sm font-medium text-primary-600 mb-1">
-                              {contact.title}
+                              {contact.title_c}
                             </p>
                             <p className="text-sm text-slate-600 mb-1">
-                              {getCompanyName(contact.companyId)}
+                              {getCompanyName(contact.companyId_c)}
                             </p>
                             <div className="flex items-center space-x-4 text-sm text-slate-500">
                               <div className="flex items-center">
                                 <ApperIcon name="Mail" className="h-4 w-4 mr-1" />
-                                {contact.email}
+                                {contact.email_c}
                               </div>
                               <div className="flex items-center">
                                 <ApperIcon name="Phone" className="h-4 w-4 mr-1" />
-                                {contact.phone}
+                                {contact.phone_c}
                               </div>
                             </div>
                           </div>
@@ -385,14 +387,14 @@ return (
                         </div>
                       </div>
                     </div>
-                    {contact.notes && (
+                    {contact.notes_c && (
                       <div className="mt-4 pt-4 border-t border-slate-200">
-                        <p className="text-sm text-slate-600">{contact.notes}</p>
+                        <p className="text-sm text-slate-600">{contact.notes_c}</p>
                       </div>
                     )}
                     <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
-                      <span>Created: {format(new Date(contact.createdAt), "MMM d, yyyy")}</span>
-                      <span>Updated: {format(new Date(contact.updatedAt), "MMM d, yyyy")}</span>
+                      <span>Created: {format(new Date(contact.createdAt_c), "MMM d, yyyy")}</span>
+                      <span>Updated: {format(new Date(contact.updatedAt_c), "MMM d, yyyy")}</span>
                     </div>
                   </CardContent>
                 </Card>

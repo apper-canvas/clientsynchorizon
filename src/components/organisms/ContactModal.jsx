@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { contactsService } from "@/services/api/contactsService";
-import Modal from "@/components/molecules/Modal";
-import Button from "@/components/atoms/Button";
-import FormField from "@/components/molecules/FormField";
 import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Modal from "@/components/molecules/Modal";
+import FormField from "@/components/molecules/FormField";
 
 const ContactModal = ({ isOpen, onClose, contact, companies, onContactSaved }) => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    companyId: "",
-    title: "",
-    notes: ""
+firstName_c: "",
+    lastName_c: "",
+    email_c: "",
+    phone_c: "",
+    companyId_c: "",
+    title_c: "",
+    notes_c: ""
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (contact) {
-      setFormData({
-        firstName: contact.firstName || "",
-        lastName: contact.lastName || "",
-        email: contact.email || "",
-        phone: contact.phone || "",
-        companyId: contact.companyId?.toString() || "",
-        title: contact.title || "",
-        notes: contact.notes || ""
+setFormData({
+        firstName_c: contact.firstName_c || "",
+        lastName_c: contact.lastName_c || "",
+        email_c: contact.email_c || "",
+        phone_c: contact.phone_c || "",
+        companyId_c: contact.companyId_c?.Id?.toString() || contact.companyId_c?.toString() || "",
+        title_c: contact.title_c || "",
+        notes_c: contact.notes_c || ""
       });
     } else {
       setFormData({
@@ -46,25 +46,25 @@ const ContactModal = ({ isOpen, onClose, contact, companies, onContactSaved }) =
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
+if (!formData.firstName_c.trim()) {
+      newErrors.firstName_c = "First name is required";
     }
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
+    if (!formData.lastName_c.trim()) {
+      newErrors.lastName_c = "Last name is required";
     }
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
+    if (!formData.email_c.trim()) {
+      newErrors.email_c = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email_c)) {
+      newErrors.email_c = "Please enter a valid email";
     }
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
+    if (!formData.phone_c.trim()) {
+      newErrors.phone_c = "Phone number is required";
     }
-    if (!formData.companyId) {
-      newErrors.companyId = "Company is required";
+    if (!formData.companyId_c) {
+      newErrors.companyId_c = "Company is required";
     }
-    if (!formData.title.trim()) {
-      newErrors.title = "Job title is required";
+    if (!formData.title_c.trim()) {
+      newErrors.title_c = "Job title is required";
     }
 
     setErrors(newErrors);
@@ -77,9 +77,9 @@ const ContactModal = ({ isOpen, onClose, contact, companies, onContactSaved }) =
 
     setLoading(true);
     try {
-      const contactData = {
+const contactData = {
         ...formData,
-        companyId: parseInt(formData.companyId)
+        companyId_c: parseInt(formData.companyId_c)
       };
 
       let savedContact;
@@ -108,119 +108,86 @@ const ContactModal = ({ isOpen, onClose, contact, companies, onContactSaved }) =
 
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title={contact ? "Edit Contact" : "Add New Contact"}
-      size="lg"
-    >
-      <form onSubmit={handleSubmit} className="p-6 space-y-6">
-        {errors.general && (
-          <div className="p-3 bg-error-50 border border-error-200 rounded-lg text-error-700 text-sm">
+    isOpen={isOpen}
+    onClose={onClose}
+    title={contact ? "Edit Contact" : "Add New Contact"}
+    size="lg">
+    <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        {errors.general && <div
+            className="p-3 bg-error-50 border border-error-200 rounded-lg text-error-700 text-sm">
             {errors.general}
-          </div>
-        )}
-
+        </div>}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            label="First Name"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            error={errors.firstName}
-            required
-          />
-
-          <FormField
-            label="Last Name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            error={errors.lastName}
-            required
-          />
+            <FormField
+                label="First Name"
+                name="firstName_c"
+                value={formData.firstName_c}
+                onChange={handleChange}
+                error={errors.firstName_c}
+                required />
+            <FormField
+                label="Last Name"
+                name="lastName_c"
+                value={formData.lastName_c}
+                onChange={handleChange}
+                error={errors.lastName_c}
+                required />
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            error={errors.email}
-            required
-          />
-
-          <FormField
-            label="Phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            error={errors.phone}
-            required
-          />
+            <FormField
+                label="Email"
+                name="email_c"
+                type="email"
+                value={formData.email_c}
+                onChange={handleChange}
+                error={errors.email_c}
+                required />
+            <FormField
+                label="Phone"
+                name="phone_c"
+                value={formData.phone_c}
+                onChange={handleChange}
+                error={errors.phone_c}
+                required />
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            label="Company"
-            error={errors.companyId}
-            required
-          >
-            <Select
-              name="companyId"
-              value={formData.companyId}
-              onChange={handleChange}
-              error={errors.companyId}
-            >
-              <option value="">Select a company</option>
-              {companies.map(company => (
-                <option key={company.Id} value={company.Id}>
-                  {company.name}
-                </option>
-              ))}
-            </Select>
-          </FormField>
-
-          <FormField
-            label="Job Title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            error={errors.title}
-            required
-          />
-        </div>
-
-        <FormField
-          label="Notes"
-          type="textarea"
-          name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-          placeholder="Additional notes about this contact..."
-          error={errors.notes}
-        />
-
-        <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={onClose}
-            disabled={loading}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            className="btn-gradient"
-            disabled={loading}
-          >
-            {loading ? "Saving..." : contact ? "Update Contact" : "Create Contact"}
-          </Button>
-        </div>
-      </form>
-    </Modal>
+            <FormField label="Company" error={errors.companyId_c} required>
+                <Select
+                    name="companyId_c"
+                    value={formData.companyId_c}
+                    onChange={handleChange}
+                    error={errors.companyId_c}>
+                    <option value="">Select a company</option>
+                    {companies.map(company => <option key={company.Id} value={company.Id}>
+                        {company.name_c}
+                    </option>)}
+                </Select>
+            </FormField>
+            <FormField
+                label="Job Title"
+                name="title_c"
+                value={formData.title_c}
+                onChange={handleChange}
+                error={errors.title_c}
+                required
+                placeholder="e.g., Software Engineer, Marketing Director" />
+            <FormField
+                label="Notes"
+                type="textarea"
+                name="notes_c"
+                value={formData.notes_c}
+                onChange={handleChange}
+                placeholder="Additional notes about this contact..."
+                error={errors.notes_c} />
+            <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
+                <Button type="button" variant="secondary" onClick={onClose} disabled={loading}>Cancel
+                              </Button>
+                <Button type="submit" className="btn-gradient" disabled={loading}>
+                    {loading ? "Saving..." : contact ? "Update Contact" : "Create Contact"}
+                </Button>
+            </div>
+        </div></form>
+</Modal>
   );
 };
 

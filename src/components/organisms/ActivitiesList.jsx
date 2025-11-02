@@ -53,34 +53,34 @@ const ActivitiesList = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = activities;
+let filtered = activities;
 
     // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(activity =>
-        activity.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        activity.type.toLowerCase().includes(searchTerm.toLowerCase())
+        activity.subject_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        activity.description_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        activity.type_c?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filter by status
+// Filter by status
     if (filterStatus === "completed") {
-      filtered = filtered.filter(activity => activity.completed);
+      filtered = filtered.filter(activity => activity.completed_c);
     } else if (filterStatus === "pending") {
-      filtered = filtered.filter(activity => !activity.completed);
+      filtered = filtered.filter(activity => !activity.completed_c);
     } else if (filterStatus === "overdue") {
       const now = new Date();
       filtered = filtered.filter(activity => 
-        !activity.completed && isBefore(new Date(activity.dueDate), now)
+        !activity.completed_c && isBefore(new Date(activity.dueDate_c), now)
       );
     }
 
-    // Sort by due date
+// Sort by due date
     filtered = filtered.sort((a, b) => {
-      if (a.completed && !b.completed) return 1;
-      if (!a.completed && b.completed) return -1;
-      return new Date(a.dueDate) - new Date(b.dueDate);
+      if (a.completed_c && !b.completed_c) return 1;
+      if (!a.completed_c && b.completed_c) return -1;
+      return new Date(a.dueDate_c) - new Date(b.dueDate_c);
     });
 
     setFilteredActivities(filtered);
@@ -125,11 +125,11 @@ const ActivitiesList = () => {
 
   const handleToggleComplete = async (activity) => {
     try {
-      if (activity.completed) {
+if (activity.completed_c) {
         // If already completed, update to mark as incomplete
         const updatedActivity = await activitiesService.update(activity.Id, {
           ...activity,
-          completed: false
+          completed_c: false
         });
         setActivities(activities.map(a => 
           a.Id === activity.Id ? updatedActivity : a
@@ -150,15 +150,15 @@ const ActivitiesList = () => {
   };
 
   const getContactName = (contactId) => {
-    if (!contactId) return "General Activity";
-    const contact = contacts.find(c => c.Id === contactId);
-    return contact ? `${contact.firstName} ${contact.lastName}` : "Unknown Contact";
+if (!contactId) return "General Activity";
+    const contact = contacts.find(c => c.Id === (contactId?.Id || contactId));
+    return contact ? `${contact.firstName_c} ${contact.lastName_c}` : "Unknown Contact";
   };
 
   const getDealTitle = (dealId) => {
     if (!dealId) return null;
-    const deal = deals.find(d => d.Id === dealId);
-    return deal ? deal.title : "Unknown Deal";
+    const deal = deals.find(d => d.Id === (dealId?.Id || dealId));
+    return deal ? deal.title_c : "Unknown Deal";
   };
 
   const getActivityIcon = (type) => {
@@ -172,11 +172,11 @@ const ActivitiesList = () => {
     return icons[type] || "CheckSquare";
   };
 
-  const getActivityColor = (activity) => {
-    if (activity.completed) return "success";
+const getActivityColor = (activity) => {
+    if (activity.completed_c) return "success";
     
     const now = new Date();
-    const dueDate = new Date(activity.dueDate);
+    const dueDate = new Date(activity.dueDate_c);
     
     if (isBefore(dueDate, now)) return "danger";
     if (isBefore(dueDate, new Date(now.getTime() + 24 * 60 * 60 * 1000))) return "warning";
@@ -184,10 +184,10 @@ const ActivitiesList = () => {
   };
 
   const getStatusText = (activity) => {
-    if (activity.completed) return "Completed";
+if (activity.completed_c) return "Completed";
     
     const now = new Date();
-    const dueDate = new Date(activity.dueDate);
+    const dueDate = new Date(activity.dueDate_c);
     
     if (isBefore(dueDate, now)) return "Overdue";
     if (isBefore(dueDate, new Date(now.getTime() + 24 * 60 * 60 * 1000))) return "Due Soon";
@@ -282,26 +282,26 @@ const ActivitiesList = () => {
                     <div className="flex items-start space-x-4">
                       <div className="flex items-center space-x-3">
                         <button
-                          onClick={() => handleToggleComplete(activity)}
+onClick={() => handleToggleComplete(activity)}
                           className={`h-6 w-6 rounded border-2 flex items-center justify-center transition-colors ${
-                            activity.completed
+                            activity.completed_c
                               ? "bg-success-500 border-success-500 text-white"
                               : "border-slate-300 hover:border-success-500"
                           }`}
                         >
-                          {activity.completed && (
+                          {activity.completed_c && (
                             <ApperIcon name="Check" className="h-3 w-3" />
                           )}
                         </button>
-                        <div className={`h-12 w-12 bg-gradient-to-br rounded-xl flex items-center justify-center ${
-                          activity.completed 
+<div className={`h-12 w-12 bg-gradient-to-br rounded-xl flex items-center justify-center ${
+                          activity.completed_c 
                             ? "from-slate-500/10 to-slate-600/10" 
                             : "from-primary-500/10 to-primary-600/10"
                         }`}>
                           <ApperIcon 
-                            name={getActivityIcon(activity.type)} 
+                            name={getActivityIcon(activity.type_c)} 
                             className={`h-6 w-6 ${
-                              activity.completed ? "text-slate-500" : "text-primary-600"
+                              activity.completed_c ? "text-slate-500" : "text-primary-600"
                             }`}
                           />
                         </div>
@@ -309,17 +309,17 @@ const ActivitiesList = () => {
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-2">
-                          <h3 className={`text-lg font-semibold ${
-                            activity.completed ? "text-slate-500 line-through" : "text-slate-900"
+<h3 className={`text-lg font-semibold ${
+                            activity.completed_c ? "text-slate-500 line-through" : "text-slate-900"
                           }`}>
-                            {activity.subject}
+                            {activity.subject_c}
                           </h3>
                           <div className="flex items-center space-x-2 ml-4">
                             <Badge variant={getActivityColor(activity)} size="sm">
                               {getStatusText(activity)}
                             </Badge>
                             <Badge variant="outline" size="sm">
-                              {activity.type}
+                              {activity.type_c}
                             </Badge>
                           </div>
                         </div>
@@ -330,18 +330,18 @@ const ActivitiesList = () => {
                         
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-slate-500">
                           <div className="flex items-center">
-                            <ApperIcon name="User" className="h-4 w-4 mr-2" />
-                            {getContactName(activity.contactId)}
+<ApperIcon name="User" className="h-4 w-4 mr-2" />
+                            {getContactName(activity.contactId_c)}
                           </div>
-                          {activity.dealId && (
+                          {activity.dealId_c && (
                             <div className="flex items-center">
                               <ApperIcon name="Target" className="h-4 w-4 mr-2" />
-                              {getDealTitle(activity.dealId)}
+                              {getDealTitle(activity.dealId_c)}
                             </div>
                           )}
                           <div className="flex items-center">
                             <ApperIcon name="Calendar" className="h-4 w-4 mr-2" />
-                            Due: {format(new Date(activity.dueDate), "MMM d, yyyy h:mm a")}
+                            Due: {format(new Date(activity.dueDate_c), "MMM d, yyyy h:mm a")}
                           </div>
                         </div>
                       </div>

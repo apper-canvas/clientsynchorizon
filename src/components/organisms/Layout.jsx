@@ -28,7 +28,7 @@ const Layout = () => {
       
       {/* Main Content */}
       <div className="flex flex-col flex-1 lg:ml-64">
-        {/* Header */}
+{/* Header */}
         <Header 
           onMenuToggle={() => setSidebarOpen(true)}
           title={getPageTitle()}

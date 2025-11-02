@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { dealsService } from "@/services/api/dealsService";
 import { contactsService } from "@/services/api/contactsService";
 import { companiesService } from "@/services/api/companiesService";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Badge from "@/components/atoms/Badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
-import DealModal from "./DealModal";
 import { format } from "date-fns";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import DealModal from "@/components/organisms/DealModal";
+import Loading from "@/components/ui/Loading";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
 
 const DealsPipeline = () => {
   const [dealsByStage, setDealsByStage] = useState({});
@@ -104,15 +104,15 @@ const DealsPipeline = () => {
   };
 
   const getContactName = (contactId) => {
-    const contact = contacts.find(c => c.Id === contactId);
-    return contact ? `${contact.firstName} ${contact.lastName}` : "Unknown Contact";
+const contact = contacts.find(c => c.Id === (contactId?.Id || contactId));
+    return contact ? `${contact.firstName_c} ${contact.lastName_c}` : "Unknown Contact";
   };
 
   const getCompanyName = (companyId) => {
-    const company = companies.find(c => c.Id === companyId);
-    return company ? company.name : "Unknown Company";
+    if (!companyId) return "No Company";
+    const company = companies.find(c => c.Id === (companyId?.Id || companyId));
+    return company ? company.name_c : "Unknown Company";
   };
-
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -121,8 +121,8 @@ const DealsPipeline = () => {
     }).format(amount);
   };
 
-  const getTotalValue = (deals) => {
-    return deals.reduce((sum, deal) => sum + deal.value, 0);
+const getTotalValue = (deals) => {
+    return deals.reduce((sum, deal) => sum + deal.value_c, 0);
   };
 
   if (loading) return <Loading variant="card" />;
@@ -200,25 +200,30 @@ const DealsPipeline = () => {
                           <div className="space-y-3">
                             <div>
                               <h4 className="font-medium text-slate-900 text-sm mb-1">
-                                {deal.title}
+{deal.title_c}
                               </h4>
-                              <p className="text-xs text-slate-500">
-                                {getCompanyName(deal.companyId)}
-                              </p>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                              <span className="text-lg font-bold gradient-text">
-                                {formatCurrency(deal.value)}
-                              </span>
-                              <Badge 
-                                variant="success" 
-                                size="sm" 
-                                className="text-xs"
-                              >
-                                {deal.probability}%
-                              </Badge>
-                            </div>
+                              <div className="flex items-center justify-between mt-2">
+                                <div className="flex items-center space-x-2">
+                                  <div className="text-xs text-slate-600">
+                                    {getContactName(deal.contactId_c)}
+                                  </div>
+                                  <div className="text-xs text-slate-600">
+                                    {getCompanyName(deal.companyId_c)}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between mt-2">
+                                <span className="text-lg font-bold gradient-text">
+                                  {formatCurrency(deal.value_c)}
+                                </span>
+                                <Badge 
+                                  variant="success" 
+                                  size="sm" 
+                                  className="text-xs"
+                                >
+                                  {deal.probability_c}%
+                                </Badge>
+                              </div>
 
                             <div className="space-y-1">
                               <div className="flex items-center text-xs text-slate-500">
