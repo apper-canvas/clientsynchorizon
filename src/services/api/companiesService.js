@@ -1,6 +1,6 @@
-import { getApperClient } from "@/services/apperClient";
 import { toast } from "react-toastify";
 import React from "react";
+import { getApperClient } from "@/services/apperClient";
 
 export const companiesService = {
   async getAll() {
@@ -242,12 +242,10 @@ export const companiesService = {
         console.error(response.message);
         return [];
       }
-
-      return response.data || [];
+return response.data || [];
     } catch (error) {
       console.error("Error searching companies:", error?.response?.data?.message || error);
       return [];
-return [];
     }
   }
 };

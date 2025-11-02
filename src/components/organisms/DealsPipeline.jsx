@@ -197,10 +197,10 @@ const getTotalValue = (deals) => {
                     >
                       <Card className="card-hover bg-white shadow-soft">
                         <CardContent className="p-4">
-                          <div className="space-y-3">
+<div className="space-y-3">
                             <div>
                               <h4 className="font-medium text-slate-900 text-sm mb-1">
-{deal.title_c}
+                                {deal.title_c}
                               </h4>
                               <div className="flex items-center justify-between mt-2">
                                 <div className="flex items-center space-x-2">
@@ -224,18 +224,17 @@ const getTotalValue = (deals) => {
                                   {deal.probability_c}%
                                 </Badge>
                               </div>
-
-                            <div className="space-y-1">
+                            </div>
+<div className="space-y-1">
                               <div className="flex items-center text-xs text-slate-500">
                                 <ApperIcon name="User" className="h-3 w-3 mr-1" />
-                                {getContactName(deal.contactId)}
+                                {getContactName(deal.contactId_c)}
                               </div>
                               <div className="flex items-center text-xs text-slate-500">
                                 <ApperIcon name="Calendar" className="h-3 w-3 mr-1" />
-                                {format(new Date(deal.closeDate), "MMM d, yyyy")}
+                                {format(new Date(deal.closeDate_c), "MMM d, yyyy")}
                               </div>
                             </div>
-
                             <div className="flex justify-end">
                               <Button
                                 variant="ghost"
@@ -247,7 +246,7 @@ const getTotalValue = (deals) => {
                                 className="p-1 h-6 w-6"
                               >
                                 <ApperIcon name="Edit" className="h-3 w-3" />
-                              </Button>
+</Button>
                             </div>
                           </div>
                         </CardContent>
